@@ -27,11 +27,11 @@ function App() {
     const [beastList, setBeastList] = useState(beastData)
 
     const setNumberOfHorns = (horns) => {
-        if (horns == "All beasts") {
+        if (horns === "All beasts") {
             setBeastList(beastData)
         }
         else {
-            let newList = beastData.filter((beast) => {return beast.horns == horns})
+            let newList = beastData.filter((beast) => {return beast.horns.toString() === horns})
             setBeastList(newList)
         }
         document.activeElement.blur()
