@@ -1,25 +1,50 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState} from 'react';
+import Header from './components/Header'
+import Main from './components/Main'
+import Footer from './components/Footer'
+import SelectedBeast from './components/SelectedBeast';
+import beastData from './assets/data'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    // Modal functions
+    const [modalData, setModalData] = useState({
+        show: false,
+        title: "",
+        image_url: "",
+        description: ""
+    })
+    
+    const modalClicked = (beastData) => {
+        setModalData({...beastData, show:true})
+    }
+
+    const hideModal = () => {
+        setModalData(previouState => {return {...previouState, show: false}})
+    }
+
+    // Horns filter functions
+    const [beastList, setBeastList] = useState(beastData)
+
+    const setNumberOfHorns = (horns) => {
+        if (horns == "All beasts") {
+            setBeastList(beastData)
+        }
+        else {
+            let newList = beastData.filter((beast) => {return beast.horns == horns})
+            setBeastList(newList)
+        }
+        document.activeElement.blur()
+    }
+
+    return (
+        <div>
+            <Header setNumberOfHorns={setNumberOfHorns}/>
+            <Main modalClicked={modalClicked} beastList={beastList}/>
+            <Footer />
+            <SelectedBeast show={modalData.show} onHide={hideModal} modalData = {modalData}/>
+        </div>
+    );
 }
 
 export default App;
